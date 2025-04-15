@@ -6,15 +6,15 @@ run:
 	streamlit run main.py
 # フォーマット
 format:
-	black main.py
+	black .
 
 # Lint
 lint:
-	ruff check
+	ruff check .
 
 # 型チェック
 check:
-	mypy main.py
+	mypy .
 
 # テスト実行
 test:

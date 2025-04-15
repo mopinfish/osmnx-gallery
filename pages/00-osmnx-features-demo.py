@@ -2,16 +2,15 @@
 
 import streamlit as st
 import osmnx as ox
-import networkx as nx
-import matplotlib.pyplot as plt
-import geopandas as gpd
 
 st.title("OSMnx デモアプリ")
 st.write("都市の道路ネットワークを取得・可視化し、GeoDataFrameとしても出力します。")
 
 # 入力フィールド
 place_name = st.text_input(
-    "都市名を入力してください（例: Piedmont, California, USA）", "Piedmont, California, USA")
+    "都市名を入力してください（例: Piedmont, California, USA）",
+    "Piedmont, California, USA",
+)
 network_type = st.selectbox("ネットワークタイプ", ["drive", "walk", "bike", "all"])
 
 if st.button("ネットワークを取得して表示"):
@@ -36,12 +35,12 @@ if st.button("ネットワークを取得して表示"):
             label="ノードをGeoJSONでダウンロード",
             data=gdf_nodes.to_json(),
             file_name="nodes.geojson",
-            mime="application/geo+json"
+            mime="application/geo+json",
         )
 
         st.download_button(
             label="エッジをGeoJSONでダウンロード",
             data=gdf_edges.to_json(),
             file_name="edges.geojson",
-            mime="application/geo+json"
+            mime="application/geo+json",
         )
