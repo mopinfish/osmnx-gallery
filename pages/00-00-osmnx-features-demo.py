@@ -3,8 +3,7 @@
 import streamlit as st
 import osmnx as ox
 import matplotlib.pyplot as plt
-import geopandas as gpd
-import contextily as ctx
+import contextily as ctx  # type: ignore
 
 st.set_page_config(layout="wide")
 st.title("OSMnx × Contextily デモアプリ")
@@ -12,7 +11,9 @@ st.write("都市の道路ネットワークを取得し、OpenStreetMapの背景
 
 # ユーザー入力
 place_name = st.text_input(
-    "都市名を入力してください（例: Piedmont, California, USA）", "Piedmont, California, USA")
+    "都市名を入力してください（例: Piedmont, California, USA）",
+    "Piedmont, California, USA",
+)
 network_type = st.selectbox("ネットワークタイプ", ["drive", "walk", "bike", "all"])
 
 if st.button("ネットワークを取得して表示"):

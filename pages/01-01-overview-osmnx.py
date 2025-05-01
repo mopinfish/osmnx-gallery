@@ -25,18 +25,22 @@ if st.button("都市境界を取得"):
 
 # --- セクション2: 複数都市の境界を取得しGeoPackage保存 ---
 st.header("② 複数都市の境界取得・保存・表示")
-place_input = st.text_area("都市リスト（1行ずつ入力）", value="\n".join([
-    "Berkeley, California, USA",
-    "Oakland, California, USA",
-    "Piedmont, California, USA",
-    "Emeryville, California, USA",
-    "Alameda, Alameda County, CA, USA"
-]))
-places = [line.strip()
-          for line in place_input.strip().splitlines() if line.strip()]
+place_input = st.text_area(
+    "都市リスト（1行ずつ入力）",
+    value="\n".join(
+        [
+            "Berkeley, California, USA",
+            "Oakland, California, USA",
+            "Piedmont, California, USA",
+            "Emeryville, California, USA",
+            "Alameda, Alameda County, CA, USA",
+        ]
+    ),
+)
+places = [line.strip() for line in place_input.strip().splitlines() if line.strip()]
 
 if st.button("複数都市を取得して表示"):
-    gdf = ox.geocode_to_gdf(places)
+    gdf = ox.geocode_to_gdf(list(places))
     gdf_proj = ox.projection.project_gdf(gdf)
 
     # 保存（GeoPackage）
@@ -59,7 +63,7 @@ osm_ids = st.text_input("OSM IDs（カンマ区切り）", "R357794, N8170768521
 if st.button("OSM IDから取得"):
     try:
         ids = [x.strip() for x in osm_ids.split(",")]
-        gdf = ox.geocode_to_gdf(ids, by_osmid=True)
+        gdf = ox.geocode_to_gdf([{"osmid": id} for id in ids], by_osmid=True)
         st.map(gdf)
         st.dataframe(gdf)
     except Exception as e:
