@@ -21,6 +21,9 @@
   },
   "forwardPorts": [8501],
   "postCreateCommand": "uv pip install --system -r requirements.txt -r requirements-dev.txt",
+  "postAttachCommand": {
+    "server": "streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false"
+  },
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.11"
