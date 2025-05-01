@@ -2,7 +2,8 @@ import streamlit as st
 
 st.set_page_config(page_title="OSMnx デモギャラリー", layout="wide")
 st.title("📦 OSMnx デモギャラリー")
-st.markdown("""
+st.markdown(
+    """
 このアプリは [OSMnx](https://osmnx.readthedocs.io/) の公式ノートブックをベースにした Streamlit デモギャラリーです。
 
 以下のページでは、都市の道路ネットワーク解析や空間分析、描画、ルーティング、クラスタリングなど多彩な機能を体験できます。
@@ -45,4 +46,5 @@ st.markdown("""
 ---
 
 各ページは左のサイドバーからもアクセス可能です。
-""")
+"""
+)

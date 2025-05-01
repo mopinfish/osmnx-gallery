@@ -1,18 +1,19 @@
 import streamlit as st
 import osmnx as ox
-import matplotlib.pyplot as plt
-import numpy as np
 
 st.set_page_config(layout="wide")
 st.title("📍 OSMnx Routing & Nearest Node Demo (v2.0対応)")
 
-st.markdown("""
+st.markdown(
+    """
 このページでは、指定した都市の道路ネットワークを取得し、
 そのネットワーク上にランダムな点を生成し、各点に最も近いノード・エッジを検索する処理を行います。
 OSMnxの `nearest_nodes` や `nearest_edges` 関数の利用例を体験できます。
-""")
+"""
+)
 
-st.markdown("""
+st.markdown(
+    """
 ---
 ## 📘 実行している処理の解説
 
@@ -38,18 +39,23 @@ ox.distance.nearest_nodes(Gp, X, Y, return_dist=True)
 ox.distance.nearest_edges(Gp, X, Y, return_dist=True)
 ```
 ---
-""")
+"""
+)
 
 # --- フォームで入力を受け取る ---
 with st.form("routing_form"):
-    place = st.text_input("対象都市名（例: Piedmont, California, USA）", "Piedmont, California, USA")
+    place = st.text_input(
+        "対象都市名（例: Piedmont, California, USA）", "Piedmont, California, USA"
+    )
     network_type = st.selectbox("ネットワークタイプ", ["drive", "walk", "bike", "all"])
     n = st.slider("ランダム点の数", 10, 300, 100)
     submitted = st.form_submit_button("ネットワーク取得と検索実行")
 
 if submitted:
     try:
-        st.info(f"{place} の道路ネットワークを取得しています...（タイプ: {network_type}）")
+        st.info(
+            f"{place} の道路ネットワークを取得しています...（タイプ: {network_type}）"
+        )
         G = ox.graph.graph_from_place(place, network_type=network_type)
         Gp = ox.projection.project_graph(G)
         G_un = Gp.to_undirected()
