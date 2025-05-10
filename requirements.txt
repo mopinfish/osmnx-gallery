@@ -5,3 +5,4 @@ osmnx
 matplotlib
 contextily>=1.6
 rasterio>=1.3.0
+japanize-matplotlib==1.1.3

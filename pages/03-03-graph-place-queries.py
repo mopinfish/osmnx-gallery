@@ -2,6 +2,10 @@ import streamlit as st
 import osmnx as ox
 import matplotlib.pyplot as plt
 
+import japanize_matplotlib  # type: ignore
+
+print(japanize_matplotlib.__name__)
+
 st.set_page_config(layout="wide")
 st.title("🗺️ OSMnx Place Queries Demo")
 
