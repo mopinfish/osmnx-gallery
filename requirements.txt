@@ -8,4 +8,4 @@ rasterio>=1.3.0
 japanize-matplotlib==1.1.3
 leafmap==0.43.13
 igraph==0.11.8
-scikit-learna==1.6.1
+scikit-learn==1.6.1
