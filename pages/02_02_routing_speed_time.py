@@ -8,12 +8,22 @@ st.set_page_config(page_title="Routing by Speed or Travel Time", layout="wide")
 st.title("OSMnx Routing: Speed vs. Travel Time")
 
 st.markdown("""
-このページでは、OSMnxとNetworkXを使って経路探索を行い、
-**距離ベース**または**時間ベース**での最短経路を比較します。
+### 📌 概要
 
-- `graph_from_place()` で道路ネットワークを取得
-- `add_edge_speeds()` や `add_edge_travel_times()` により速度・所要時間の属性を追加
-- `shortest_path()` によって最短経路を算出
+このページでは、OSMnxとNetworkXを使って経路探索を行い、距離または時間ベースでの最短経路を比較します。
+
+---
+
+### 🛠 使用する主な関数の解説
+
+- `ox.add_edge_speeds(G)`：各エッジに推定速度（km/h）を追加します。
+- `ox.add_edge_travel_times(G)`：速度から各エッジの移動時間（秒）を追加します。
+- `nx.shortest_path(G, source, target, weight)`：指定された重み（距離 or 時間）で最短経路を探索します。
+- `ox.plot_graph_route(G, route)`：指定したルートをグラフ上に描画します。
+
+---
+
+### ⚙️ 実行
 """)
 
 with st.form("routing_form"):
@@ -28,7 +38,6 @@ if submitted:
         G = ox.add_edge_speeds(G)
         G = ox.add_edge_travel_times(G)
 
-        # 出発点と到着点をランダムに設定
         orig, dest = list(G.nodes())[0], list(G.nodes())[-1]
         weight = "length" if routing_mode == "最短距離" else "travel_time"
 

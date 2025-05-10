@@ -7,11 +7,22 @@ st.set_page_config(page_title="Graph Place Queries", layout="wide")
 st.title("Graph Place Queries with OSMnx")
 
 st.markdown("""
-このページでは、OSMnxの `graph_from_place` や `graph_from_address` などの関数を使って、
-さまざまな入力形式から道路ネットワークを取得する方法を試します。
+### 📌 概要
 
-- 都市名、住所、緯度経度座標からのネットワーク取得
-- 取得したグラフの可視化
+このページでは、OSMnxの `graph_from_place` や `graph_from_address` などの関数を使って、
+地名・住所・緯度経度から道路ネットワークを取得する方法を解説・体験できます。
+
+---
+
+### 🛠 使用する主な関数の解説
+
+- `ox.graph_from_place(place)`：都市名を指定して道路ネットワークを取得
+- `ox.graph_from_address(address, dist)`：住所と距離を指定して周辺の道路ネットワークを取得
+- `ox.graph_from_point((lat, lng), dist)`：緯度経度からバッファ距離でネットワークを取得
+
+---
+
+### ⚙️ 実行
 """)
 
 mode = st.radio("入力モードの選択", ["都市名", "住所", "緯度経度"])
@@ -29,8 +40,8 @@ if mode == "都市名":
             st.pyplot(fig)
 
 elif mode == "住所":
-    address = st.text_input("住所（例: 1 Chome-1-2 Oshiage, Sumida City, Tokyo）",
-                            value="1 Chome-1-2 Oshiage, Sumida City, Tokyo")
+    address = st.text_input("住所（例: 1 Chome-1-2 Oshiage, Sumida, Tokyo）",
+                            value="1 Chome-1-2 Oshiage, Sumida, Tokyo")
     dist = st.slider("取得半径（メートル）", 100, 3000, 800, 100)
     trigger = st.button("ネットワーク取得（住所）")
     if trigger:

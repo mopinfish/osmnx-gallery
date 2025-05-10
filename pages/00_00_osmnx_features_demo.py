@@ -7,12 +7,24 @@ st.set_page_config(page_title="OSMnx Features Demo", layout="wide")
 st.title("OSMnx Features Demo")
 
 st.markdown("""
-このデモでは、OSMnxを使って指定した都市の道路ネットワークを取得し、可視化します。
-以下のステップで進行します：
+### 📌 概要
 
-1. 入力された都市名に基づき、道路ネットワークを取得
-2. ネットワークのノードおよびエッジを描画
-3. 基本的な統計情報を表示
+このデモでは、OSMnxを使って指定した都市の道路ネットワークを取得し、可視化します。
+
+---
+
+### 🛠 使用する主な関数の解説
+
+- `ox.graph_from_place(place, network_type)`:
+    指定された都市の道路ネットワークを取得します。
+- `ox.plot_graph(G)`:
+    ネットワークを可視化する関数で、Matplotlibの描画機能を内部で使っています。
+- `ox.basic_stats(G)`:
+    ネットワークの基本統計指標（ノード数、平均ノード間距離など）を取得します。
+
+---
+
+### ⚙️ 実行
 """)
 
 with st.form("osmnx_form"):
