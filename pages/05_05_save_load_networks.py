@@ -109,87 +109,97 @@ st.markdown(
 ---
 # 💾 Save and Load Street Networks の解説
 
-このノートブックでは、OSMnxで取得した道路ネットワークをファイルに保存し、後から再読み込みする方法を紹介します。ファイル形式には `.graphml`, `.gpkg`, `.osm` などがあり、用途に応じて使い分けることができます。
+このアプリでは、OSMnxで取得した道路ネットワークをファイルに保存し、あとから再読み込みして再利用する方法を体験できます。保存形式は `.graphml` および `.gpkg`（GeoPackage）に対応しています。
 
 ---
 
 ## 🌐 1. ネットワークの取得
 
 ```python
-import osmnx as ox
-
-G = ox.graph_from_place("Piedmont, California, USA", network_type="drive")
+G = ox.graph_from_place("東京都千代田区", network_type="drive")
 ```
 
-- 指定した場所の自動車用ネットワークを取得します。
+- 指定した地名からOSM道路ネットワークを取得します。
+- `network_type` は "drive", "walk", "bike", "all" などから選択可能です。
 
 ---
 
-## 💾 2. GraphML形式で保存
+## 💾 2. 保存機能（ダウンロード可能）
+
+### GraphML形式で保存
 
 ```python
-ox.save_graphml(G, filepath="graph.graphml")
+ox.save_graphml(G, filepath="network.graphml")
 ```
 
-- `.graphml` は NetworkX と互換性があり、ネットワーク構造や属性をすべて保持します。
-- 最も柔軟な形式であり、再利用や解析に便利です。
+- NetworkX互換の形式。構造・属性を完全に保持します。
+- 軽量で高速な保存／読み込みが可能です。
 
----
-
-## 💾 3. GeoPackage形式で保存
+### GeoPackage形式で保存
 
 ```python
-ox.save_graph_geopackage(G, filepath="graph.gpkg")
+ox.save_graph_geopackage(G, filepath="network.gpkg")
 ```
 
-- `.gpkg` は空間データベースとしてQGISなどでも直接扱える形式。
-- ノードとエッジが別のレイヤーとして保存されます。
+- QGISなどのGISツールで直接開ける形式。
+- `nodes` と `edges` がレイヤーとして保存されます。
+
+Streamlitアプリでは、いずれの形式でも一時ファイルを生成し、ダウンロードボタンから取得できます。
 
 ---
 
-## 💾 4. OSM XML形式で保存
+## 📂 3. 読み込み機能（アップロード対応）
+
+### GraphML読み込み
 
 ```python
-ox.save_graph_osm(G, filepath="graph.osm")
+G = ox.load_graphml("network.graphml")
 ```
 
-- OpenStreetMap互換の `.osm` 形式で保存。
-- 他のOSMツール（JOSMなど）と連携できます。
+- `.graphml` 形式はそのまま `ox.load_graphml()` で読み込み可能です。
 
----
-
-## 📂 5. GraphMLファイルから読み込み
+### GeoPackage（.gpkg）読み込み手順
 
 ```python
-G_loaded = ox.load_graphml("graph.graphml")
+import geopandas as gpd
+
+nodes = gpd.read_file("network.gpkg", layer="nodes")
+edges = gpd.read_file("network.gpkg", layer="edges")
+
+edges["u"] = edges["u"].astype(str)
+edges["v"] = edges["v"].astype(str)
+edges["key"] = edges["key"].astype(str)
+edges.set_index(["u", "v", "key"], inplace=True)
+
+nodes["osmid"] = nodes["osmid"].astype(str)
+nodes.set_index("osmid", inplace=True)
+
+G = ox.graph_from_gdfs(nodes, edges)
 ```
 
-- `.graphml` ファイルを再読み込みして NetworkX グラフとして利用可能。
+- `u, v, key` の列を文字列化し、MultiIndexに設定する必要があります。
+- `graph_from_gdfs` を用いて再構築します。
 
 ---
 
-## 🗂️ 6. GeoPackageファイルから読み込み
+## ✅ 機能まとめ
 
-```python
-G_loaded = ox.load_graph_geopackage("graph.gpkg")
-```
-
-- `.gpkg` からグラフを再構成できます（ノードとエッジを結合）。
-
----
-
-## ✅ まとめ
-
-| 操作 | 関数 | 拡張子 | 特徴 |
-|------|------|--------|------|
-| 保存（GraphML） | `save_graphml` | `.graphml` | 構造＋属性、最も汎用的 |
-| 保存（GeoPackage） | `save_graph_geopackage` | `.gpkg` | GISソフトにそのまま利用可 |
-| 保存（OSM XML） | `save_graph_osm` | `.osm` | OSMツール向け |
-| 読み込み（GraphML） | `load_graphml` | `.graphml` | 高速・安定 |
-| 読み込み（GeoPackage） | `load_graph_geopackage` | `.gpkg` | 空間属性対応 |
+| 機能           | 関数／操作                              | 拡張子    |
+|----------------|------------------------------------------|-----------|
+| ネットワーク取得 | `graph_from_place`                      | -         |
+| 保存（GraphML） | `save_graphml`                          | `.graphml`|
+| 保存（GeoPackage） | `save_graph_geopackage`              | `.gpkg`   |
+| 読み込み（GraphML） | `load_graphml`                      | `.graphml`|
+| 読み込み（GeoPackage） | `graph_from_gdfs` + `geopandas` | `.gpkg`   |
 
 ---
 
-OSMnxは、グラフ構造を柔軟に保存・読み込みする機能を提供しています。形式ごとの特性を理解し、ワークフローに最適な形式を選択しましょう。
+## 📝 注意点
+
+- `.gpkg` 読み込みは明示的な前処理が必要です（インデックスと型整合）。
+- `.graphml` の方がPython環境では取り扱いが容易です。
+- Streamlitのアップロード機能を使って、`.graphml` または `.gpkg` ファイルを読み込めます。
+
+---
 """
 )
