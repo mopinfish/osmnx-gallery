@@ -3,7 +3,7 @@ install:
 	uv pip install --system -r requirements.txt -r requirements-dev.txt
 # Streamlit 実行
 run:
-	streamlit run main.py
+	streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false
 # フォーマット
 format:
 	black .

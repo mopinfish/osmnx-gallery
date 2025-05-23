@@ -1,14 +1,14 @@
 import streamlit as st
 import osmnx as ox
 import igraph as ig
-import matplotlib.pyplot as plt
 import networkx as nx
 
 st.set_page_config(page_title="OSMnx to iGraph Conversion", layout="wide")
 
 st.title("Convert OSMnx Network to iGraph")
 
-st.markdown("""
+st.markdown(
+    """
 ### 📌 概要
 
 このページでは、OSMnxで取得したネットワークを `igraph` 形式に変換し、ネットワークの基本的なプロパティを表示します。
@@ -24,12 +24,14 @@ st.markdown("""
 ---
 
 ### ⚙️ 実行
-""")
+"""
+)
 
 with st.form("igraph_form"):
     place = st.text_input("都市名（例: Kamakura, Japan）", value="Kamakura, Japan")
     network_type = st.selectbox(
-        "ネットワークタイプ", ["drive", "walk", "bike"], index=0)
+        "ネットワークタイプ", ["drive", "walk", "bike"], index=0
+    )
     submitted = st.form_submit_button("変換実行")
 
 if submitted:
@@ -49,6 +51,7 @@ if submitted:
         st.write("次数分布（上位10件）:")
         degrees = g.degree()
         degree_counts = sorted(
-            [(i, d) for i, d in enumerate(degrees)], key=lambda x: -x[1])[:10]
+            [(i, d) for i, d in enumerate(degrees)], key=lambda x: -x[1]
+        )[:10]
         for node, deg in degree_counts:
             st.write(f"ノード {node}: 次数 {deg}")

@@ -6,7 +6,8 @@ st.set_page_config(page_title="Figure-Ground Diagram", layout="wide")
 
 st.title("Figure-Ground Diagram Example")
 
-st.markdown("""
+st.markdown(
+    """
 ### 📌 概要
 
 このページでは、**フィギュア・グラウンド図（Figure-Ground Diagram）** を作成します。都市における建物と空間の対比を視覚的に表現することで、密度や都市構造の理解に役立ちます。
@@ -22,11 +23,13 @@ st.markdown("""
 ---
 
 ### ⚙️ 実行
-""")
+"""
+)
 
 with st.form("fg_form"):
-    place = st.text_input("都市名（例: Shibuya, Tokyo, Japan）",
-                          value="Shibuya, Tokyo, Japan")
+    place = st.text_input(
+        "都市名（例: Shibuya, Tokyo, Japan）", value="Shibuya, Tokyo, Japan"
+    )
     submitted = st.form_submit_button("図を生成")
 
 if submitted:

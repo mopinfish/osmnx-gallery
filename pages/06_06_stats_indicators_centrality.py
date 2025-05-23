@@ -1,14 +1,13 @@
 import streamlit as st
 import osmnx as ox
 import networkx as nx
-import matplotlib.pyplot as plt
-import pandas as pd
 
 st.set_page_config(page_title="Network Stats & Centrality", layout="wide")
 
 st.title("Network Statistics and Centrality Measures")
 
-st.markdown("""
+st.markdown(
+    """
 ### 📌 概要
 
 このページでは、OSMnxで取得した道路ネットワークから統計情報や中心性指標を算出します。
@@ -24,12 +23,21 @@ st.markdown("""
 ---
 
 ### ⚙️ 実行
-""")
+"""
+)
 
 with st.form("centrality_form"):
     place = st.text_input("都市名（例: Kamakura, Japan）", value="Kamakura, Japan")
-    network_type = st.selectbox("ネットワークタイプ", ["drive", "walk", "bike", "all"], index=0)
-    k = st.slider("中心性計算のノード数上限（サンプリング）", min_value=50, max_value=300, value=150, step=10)
+    network_type = st.selectbox(
+        "ネットワークタイプ", ["drive", "walk", "bike", "all"], index=0
+    )
+    k = st.slider(
+        "中心性計算のノード数上限（サンプリング）",
+        min_value=50,
+        max_value=300,
+        value=150,
+        step=10,
+    )
     submitted = st.form_submit_button("計算実行")
 
 if submitted:
@@ -45,11 +53,23 @@ if submitted:
         with st.spinner("中心性を計算中..."):
             nodes = list(G.nodes())
             sample_nodes = nodes[:k]
-            centrality = nx.betweenness_centrality_subset(G, sources=sample_nodes, targets=sample_nodes, weight="length", normalized=True)
+            centrality = nx.betweenness_centrality_subset(
+                G,
+                sources=sample_nodes,
+                targets=sample_nodes,
+                weight="length",
+                normalized=True,
+            )
 
             top_node = max(centrality, key=centrality.get)
 
-            fig, ax = ox.plot_graph(G, node_size=[centrality.get(n, 0)*5000 for n in G.nodes()],
-                                    node_color="r", edge_color="#999999", show=False, close=False)
+            fig, ax = ox.plot_graph(
+                G,
+                node_size=[centrality.get(n, 0) * 5000 for n in G.nodes()],
+                node_color="r",
+                edge_color="#999999",
+                show=False,
+                close=False,
+            )
             st.pyplot(fig)
             st.write(f"**最大中心性のノード:** {top_node}")

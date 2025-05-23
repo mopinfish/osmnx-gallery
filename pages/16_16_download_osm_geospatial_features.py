@@ -2,12 +2,12 @@ import streamlit as st
 import osmnx as ox
 import matplotlib.pyplot as plt
 
-st.set_page_config(
-    page_title="Download OSM Geospatial Features", layout="wide")
+st.set_page_config(page_title="Download OSM Geospatial Features", layout="wide")
 
 st.title("Download OSM Geospatial Features")
 
-st.markdown("""
+st.markdown(
+    """
 ### 📌 概要
 
 このページでは、OpenStreetMapの指定したタグに基づく**地物データ（建物、道路、施設など）**を取得・可視化します。
@@ -22,13 +22,18 @@ st.markdown("""
 ---
 
 ### ⚙️ 実行
-""")
+"""
+)
 
 with st.form("features_form"):
-    place = st.text_input("対象地域名（例: Shibuya, Tokyo, Japan）",
-                          value="Shibuya, Tokyo, Japan")
-    key = st.selectbox("OSMキー（例: building, highway, amenity など）", [
-                       "building", "highway", "amenity", "shop", "landuse"], index=0)
+    place = st.text_input(
+        "対象地域名（例: Shibuya, Tokyo, Japan）", value="Shibuya, Tokyo, Japan"
+    )
+    key = st.selectbox(
+        "OSMキー（例: building, highway, amenity など）",
+        ["building", "highway", "amenity", "shop", "landuse"],
+        index=0,
+    )
     submitted = st.form_submit_button("データを取得")
 
 if submitted:

@@ -2,15 +2,14 @@ import streamlit as st
 import osmnx as ox
 import networkx as nx
 import matplotlib.pyplot as plt
-import numpy as np
 import geopandas as gpd
-from shapely.geometry import Polygon
 
 st.set_page_config(page_title="Isolines and Isochrones", layout="wide")
 
 st.title("Isolines and Isochrones")
 
-st.markdown("""
+st.markdown(
+    """
 ### 📌 概要
 
 このページでは、OSMnxとNetworkXを使って、**等時間線（isochrones）**を計算・表示します。
@@ -27,7 +26,8 @@ st.markdown("""
 ---
 
 ### ⚙️ 実行
-""")
+"""
+)
 
 with st.form("isochrone_form"):
     lat = st.number_input("中心点の緯度", value=35.7101, format="%.6f")
@@ -46,7 +46,8 @@ if submitted:
 
         node_center = ox.distance.nearest_nodes(G_proj, lng, lat)
         travel_times = nx.single_source_dijkstra_path_length(
-            G_proj, node_center, weight="travel_time")
+            G_proj, node_center, weight="travel_time"
+        )
 
         nodes = ox.graph_to_gdfs(G_proj, edges=False)
         nodes["travel_time"] = nodes.index.map(travel_times)
@@ -63,8 +64,9 @@ if submitted:
         gdf_poly = gpd.GeoDataFrame(polygons, crs=nodes.crs)
 
         fig, ax = plt.subplots(figsize=(8, 8))
-        gdf_poly.plot(ax=ax, column="minutes", cmap="plasma",
-                      edgecolor="k", legend=True)
+        gdf_poly.plot(
+            ax=ax, column="minutes", cmap="plasma", edgecolor="k", legend=True
+        )
         nodes.plot(ax=ax, color="black", markersize=2)
         ax.set_title("Isochrones from center")
         ax.axis("off")
