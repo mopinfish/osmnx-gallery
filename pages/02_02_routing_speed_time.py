@@ -1,7 +1,5 @@
 import streamlit as st
 import osmnx as ox
-import networkx as nx
-import matplotlib.pyplot as plt
 import random
 
 st.set_page_config(page_title="02 - Routing: Speed and Time", layout="wide")
@@ -10,9 +8,11 @@ st.title("🚗 Routing: Speed and Travel Time in OSMnx")
 st.markdown("### 📍 場所と経路探索パラメータの指定")
 with st.form("routing_form"):
     place_name = st.text_input(
-        "場所の名前", placeholder="東京都千代田区丸の内", value="東京都千代田区丸の内")
+        "場所の名前", placeholder="東京都千代田区丸の内", value="東京都千代田区丸の内"
+    )
     route_type = st.radio(
-        "重みの種類（最短経路の基準）", ["距離（length）", "所要時間（travel_time）"])
+        "重みの種類（最短経路の基準）", ["距離（length）", "所要時間（travel_time）"]
+    )
     submitted = st.form_submit_button("ルートを計算・表示")
 
 if submitted:
@@ -32,8 +32,15 @@ if submitted:
 
             # 経路計算と描画
             route = ox.routing.shortest_path(G, orig, dest, weight=weight)
-            fig, ax = ox.plot.plot_graph_route(G, route, route_color="red", route_linewidth=4,
-                                               bgcolor="white", show=False, close=False)
+            fig, ax = ox.plot.plot_graph_route(
+                G,
+                route,
+                route_color="red",
+                route_linewidth=4,
+                bgcolor="white",
+                show=False,
+                close=False,
+            )
             st.pyplot(fig)
 
             # 属性の合計を計算
@@ -56,7 +63,8 @@ if submitted:
 # --------------------
 # 解説マークダウン
 # --------------------
-st.markdown("""
+st.markdown(
+    """
 ---
 
 # 🚗 Routing: Speed and Travel Time in OSMnx の解説
@@ -154,4 +162,5 @@ travel_time = sum(ox.utils_graph.get_route_edge_attributes(G, route, "travel_tim
 
 OSMnx を使うことで、速度と時間の情報を含んだネットワーク解析を簡単に行うことができます。ルート探索の目的に応じて「距離」か「時間」を選択し、交通戦略や都市分析に応用可能です。
 
-""")
+"""
+)

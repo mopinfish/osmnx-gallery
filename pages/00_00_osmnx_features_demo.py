@@ -16,9 +16,7 @@ st.markdown("### 📍 場所とネットワークタイプを指定")
 
 with st.form("place_form"):
     place_name = st.text_input(
-        "場所の名前",
-        placeholder="東京都千代田区丸の内",
-        value="東京都千代田区丸の内"
+        "場所の名前", placeholder="東京都千代田区丸の内", value="東京都千代田区丸の内"
     )
     network_type = st.selectbox("ネットワークタイプ", ["drive", "walk", "bike", "all"])
     col1, col2 = st.columns(2)
@@ -35,7 +33,8 @@ if get_graph:
         try:
             G = ox.graph_from_place(place_name, network_type=network_type)
             fig, ax = ox.plot_graph(
-                G, bgcolor="w", node_size=0, edge_color="black", show=False, close=False)
+                G, bgcolor="w", node_size=0, edge_color="black", show=False, close=False
+            )
             st.pyplot(fig)
         except Exception as e:
             st.error(f"ネットワークの取得に失敗しました: {e}")
@@ -49,7 +48,8 @@ if get_buildings:
             tags = {"building": True}
             gdf = ox.features_from_place(place_name, tags=tags)
             fig, ax = ox.plot_footprints(
-                gdf, color="black", bgcolor="w", show=False, close=False)
+                gdf, color="black", bgcolor="w", show=False, close=False
+            )
             st.pyplot(fig)
         except Exception as e:
             st.error(f"建物データの取得に失敗しました: {e}")
@@ -57,7 +57,8 @@ if get_buildings:
 # --------------------
 # 解説マークダウン
 # --------------------
-st.markdown("""
+st.markdown(
+    """
 ---
 
 # 📦 OSMnx Features Demoの解説
@@ -162,4 +163,5 @@ ox.plot_footprints(gdf)
 ## 📌 結論
 
 OSMnxは、都市スケールの道路ネットワーク分析や可視化、建物・土地利用データの取得などにおいて非常に強力なツールです。本ノートブックではそのエントリーポイントとなる基本機能を紹介しました。
-""")
+"""
+)

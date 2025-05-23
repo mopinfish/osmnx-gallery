@@ -2,7 +2,6 @@
 
 import streamlit as st
 import osmnx as ox
-import matplotlib.pyplot as plt
 import tempfile
 import os
 
@@ -15,9 +14,7 @@ st.markdown("### 📍 場所とネットワークタイプを指定")
 
 with st.form("place_form"):
     place_name = st.text_input(
-        "場所の名前",
-        placeholder="東京都千代田区丸の内",
-        value="東京都千代田区丸の内"
+        "場所の名前", placeholder="東京都千代田区丸の内", value="東京都千代田区丸の内"
     )
     network_type = st.selectbox("ネットワークタイプ", ["drive", "walk", "bike", "all"])
     col1, col2, col3 = st.columns(3)
@@ -40,7 +37,8 @@ if show_graph or show_stats:
 if show_graph and G:
     with st.spinner("ネットワークを描画中..."):
         fig, ax = ox.plot_graph(
-            G, bgcolor="w", node_size=0, edge_color="black", show=False, close=False)
+            G, bgcolor="w", node_size=0, edge_color="black", show=False, close=False
+        )
         st.pyplot(fig)
 
 # 建物表示
@@ -50,7 +48,8 @@ if show_buildings:
             tags = {"building": True}
             gdf = ox.features_from_place(place_name, tags=tags)
             fig, ax = ox.plot_footprints(
-                gdf, color="black", bgcolor="w", show=False, close=False)
+                gdf, color="black", bgcolor="w", show=False, close=False
+            )
             st.pyplot(fig)
         except Exception as e:
             st.error(f"建物データの取得に失敗しました: {e}")
@@ -72,11 +71,12 @@ if G:
     col1, col2 = st.columns(2)
     with col1:
         if st.button("📥 GraphMLとして保存"):
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".graphml") as tmp_file:
+            with tempfile.NamedTemporaryFile(
+                delete=False, suffix=".graphml"
+            ) as tmp_file:
                 ox.save_graphml(G, filepath=tmp_file.name)
                 with open(tmp_file.name, "rb") as f:
-                    st.download_button("Download GraphML", f,
-                                       file_name="graph.graphml")
+                    st.download_button("Download GraphML", f, file_name="graph.graphml")
                 os.remove(tmp_file.name)
 
     with col2:
@@ -84,14 +84,14 @@ if G:
             with tempfile.NamedTemporaryFile(delete=False, suffix=".gpkg") as tmp_file:
                 ox.save_graph_geopackage(G, filepath=tmp_file.name)
                 with open(tmp_file.name, "rb") as f:
-                    st.download_button("Download GPKG", f,
-                                       file_name="graph.gpkg")
+                    st.download_button("Download GPKG", f, file_name="graph.gpkg")
                 os.remove(tmp_file.name)
 
 # --------------------
 # 解説マークダウン
 # --------------------
-st.markdown("""
+st.markdown(
+    """
 ---
 
 # 🗺️ OSMnx Overviewの解説
@@ -203,4 +203,5 @@ stats = ox.basic_stats(G)
 ---
 
 OSMnx は都市構造の可視化・分析において強力なツールであり、研究や実務の多様なユースケースに適用できます。今後の分析の基盤として、このノートブックが示す基本操作を理解しておくことは重要です。
-""")
+"""
+)

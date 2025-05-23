@@ -5,9 +5,18 @@ FROM mcr.microsoft.com/devcontainers/python:1-3.11
 
 ENV GDAL_VERSION=3.6.0
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN echo "Acquire::http::Pipeline-Depth 0;" > /etc/apt/apt.conf.d/99custom && \
+    echo "Acquire::http::No-Cache true;" >> /etc/apt/apt.conf.d/99custom && \
+    echo "Acquire::BrokenProxy    true;" >> /etc/apt/apt.conf.d/99custom && \
+    echo 'Acquire::http::Timeout "300";' > /etc/apt/apt.conf.d/99timeout
+
 RUN \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
+    fonts-noto-cjk \
     gdal-bin \
     libgdal-dev \
     python3-gdal && \
