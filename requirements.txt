@@ -1,5 +1,6 @@
 scipy
 streamlit
+streamlit_folium
 python-dotenv
 osmnx
 matplotlib
