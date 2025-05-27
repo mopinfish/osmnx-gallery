@@ -3,8 +3,7 @@
 import streamlit as st
 import osmnx as ox
 
-st.set_page_config(
-    page_title="08 - Custom Filters for Infrastructure", layout="wide")
+st.set_page_config(page_title="08 - Custom Filters for Infrastructure", layout="wide")
 st.title("🏗️ Custom Filters for Infrastructure")
 
 st.markdown("### 📍 地名とOSMカスタムフィルターを指定して、インフラ構造を抽出・可視化")
@@ -12,11 +11,12 @@ st.markdown("### 📍 地名とOSMカスタムフィルターを指定して、�
 with st.form("custom_filter_form"):
     place = st.text_input("場所（例: 東京都千代田区）", "東京都千代田区")
     custom_filter = st.text_input(
-        "Overpass API用のカスタムフィルター（例: [\"railway\"~\"rail\"]）",
-        '["railway"~"rail"]'
+        'Overpass API用のカスタムフィルター（例: ["railway"~"rail"]）',
+        '["railway"~"rail"]',
     )
     network_type = st.selectbox(
-        "グラフ構造のタイプ", ["all", "walk", "bike", "drive", "None (custom only)"])
+        "グラフ構造のタイプ", ["all", "walk", "bike", "drive", "None (custom only)"]
+    )
     show_nodes = st.checkbox("ノードを表示", value=False)
     edge_color = st.color_picker("エッジの色", "#1f77b4")
     edge_width = st.slider("エッジの太さ", 0.1, 5.0, 1.0, 0.1)
@@ -26,8 +26,7 @@ if submitted:
     with st.spinner("カスタムフィルターでネットワークを取得中..."):
         try:
             nt = network_type if network_type != "None (custom only)" else None
-            G = ox.graph_from_place(
-                place, network_type=nt, custom_filter=custom_filter)
+            G = ox.graph_from_place(place, network_type=nt, custom_filter=custom_filter)
 
             fig, ax = ox.plot_graph(
                 G,
@@ -36,7 +35,7 @@ if submitted:
                 edge_linewidth=edge_width,
                 bgcolor="white",
                 show=False,
-                close=False
+                close=False,
             )
             st.pyplot(fig)
 
@@ -46,7 +45,8 @@ if submitted:
 # --------------------
 # 解説マークダウン
 # --------------------
-st.markdown("""
+st.markdown(
+    """
 ---
 # 🏗️ Custom Filters for Infrastructure の解説
 
@@ -123,4 +123,5 @@ ox.plot_graph(G, node_size=0, edge_color="blue", edge_linewidth=1)
 ---
 
 この方法を使えば、道路以外のネットワーク構造も自由に抽出・分析・可視化することができます。都市計画・インフラ管理・災害対策などの分野で、OSMの多様なタグ情報を活かす高度な応用が可能です。
-""")
+"""
+)

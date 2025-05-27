@@ -7,8 +7,7 @@ import streamlit as st
 import osmnx as ox
 import networkx as nx
 
-st.set_page_config(
-    page_title="06 - Network Statistics and Centrality", layout="wide")
+st.set_page_config(page_title="06 - Network Statistics and Centrality", layout="wide")
 st.title("📊 Street Network Statistics and Centrality Indicators")
 
 st.markdown("### 📍 場所と解析対象の選択")
@@ -24,7 +23,9 @@ def compute_closeness(_G_proj):
 @st.cache_data(show_spinner="Betweenness中心性をキャッシュから取得中...")
 def compute_betweenness(_G_proj, use_approximation=False):
     if use_approximation:
-        return nx.betweenness_centrality(_G_proj, weight="length", normalized=True, k=100)
+        return nx.betweenness_centrality(
+            _G_proj, weight="length", normalized=True, k=100
+        )
     else:
         return nx.betweenness_centrality(_G_proj, weight="length", normalized=True)
 
@@ -79,10 +80,8 @@ if submitted:
                 )
                 x = [G_proj.nodes[n]["x"] for n in G_proj.nodes()]
                 y = [G_proj.nodes[n]["y"] for n in G_proj.nodes()]
-                sc = ax1.scatter(x, y, c=nc_close, cmap=cmap,
-                                 norm=norm, s=10, zorder=3)
-                fig1.colorbar(sc, ax=ax1, shrink=0.7).set_label(
-                    "Closeness Centrality")
+                sc = ax1.scatter(x, y, c=nc_close, cmap=cmap, norm=norm, s=10, zorder=3)
+                fig1.colorbar(sc, ax=ax1, shrink=0.7).set_label("Closeness Centrality")
                 st.pyplot(fig1)
 
                 # -----------------------
@@ -97,8 +96,7 @@ if submitted:
                 else:
                     st.info("正確なbetweennessを計算します。")
 
-                betweenness = compute_betweenness(
-                    G_proj, use_approximation=use_approx)
+                betweenness = compute_betweenness(G_proj, use_approximation=use_approx)
                 nc_btw = [betweenness[node] for node in G_proj.nodes()]
                 norm = colors.Normalize(vmin=min(nc_btw), vmax=max(nc_btw))
 
@@ -112,8 +110,7 @@ if submitted:
                     edge_linewidth=0.5,
                     node_size=0,
                 )
-                sc = ax2.scatter(x, y, c=nc_btw, cmap=cmap,
-                                 norm=norm, s=10, zorder=3)
+                sc = ax2.scatter(x, y, c=nc_btw, cmap=cmap, norm=norm, s=10, zorder=3)
                 fig2.colorbar(sc, ax=ax2, shrink=0.7).set_label(
                     "Betweenness Centrality"
                 )

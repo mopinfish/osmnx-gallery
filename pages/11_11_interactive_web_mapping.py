@@ -8,7 +8,9 @@ from streamlit_folium import st_folium
 st.set_page_config(page_title="11 - Interactive Web Mapping", layout="wide")
 st.title("🗺️ Interactive Web Mapping with OSMnx + Folium")
 
-st.markdown("### 📍 場所を指定して、道路ネットワークと建物をインタラクティブマップに表示")
+st.markdown(
+    "### 📍 場所を指定して、道路ネットワークと建物をインタラクティブマップに表示"
+)
 
 with st.form("web_map_form"):
     place = st.text_input("場所（例: 東京都千代田区）", "東京都千代田区")
@@ -32,8 +34,9 @@ if submitted:
             center_lon = nodes.geometry.x.mean()
 
             # foliumマップ作成
-            m = folium.Map(location=[center_lat, center_lon],
-                           zoom_start=14, control_scale=True)
+            m = folium.Map(
+                location=[center_lat, center_lon], zoom_start=14, control_scale=True
+            )
 
             # 道路エッジを追加（属性を表示せず軽量化）
             folium.GeoJson(edges, name="Network").add_to(m)
@@ -58,7 +61,8 @@ if submitted:
 # --------------------
 # 解説マークダウン
 # --------------------
-st.markdown("""
+st.markdown(
+    """
 ---
 # 🗺️ Interactive Web Mapping with OSMnx and Folium の解説
 
@@ -150,4 +154,5 @@ m.save("map.html")
 ---
 
 foliumを使うことで、OSMnxの解析結果をWeb上で誰でも触れる形で共有できます。地図ベースのインタラクティブな可視化は、都市分析・市民向け報告・教育などに非常に効果的です。
-""")
+"""
+)

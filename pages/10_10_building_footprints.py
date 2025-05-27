@@ -3,7 +3,6 @@
 import streamlit as st
 import osmnx as ox
 import matplotlib.pyplot as plt
-import geopandas as gpd
 
 st.set_page_config(page_title="10 - Building Footprints", layout="wide")
 st.title("🏢 Building Footprints from OpenStreetMap")
@@ -23,7 +22,9 @@ if submitted:
             gdf = ox.features_from_place(place, tags=tags)
 
             if gdf.empty:
-                st.warning("建物データが取得できませんでした。対象地域を変更して再試行してください。")
+                st.warning(
+                    "建物データが取得できませんでした。対象地域を変更して再試行してください。"
+                )
             else:
                 # 投影（面積計算のため）
                 gdf_proj = gdf.to_crs(ox.settings.default_crs)
@@ -35,8 +36,13 @@ if submitted:
                 # 描画
                 fig, ax = plt.subplots(figsize=(8, 8))
                 if show_area:
-                    gdf_proj.plot(ax=ax, column="area_m2", cmap="OrRd", legend=True,
-                                  legend_kwds={"label": "建物面積 (m²)"})
+                    gdf_proj.plot(
+                        ax=ax,
+                        column="area_m2",
+                        cmap="OrRd",
+                        legend=True,
+                        legend_kwds={"label": "建物面積 (m²)"},
+                    )
                 else:
                     gdf.plot(ax=ax, facecolor="black", edgecolor="none")
 
@@ -51,7 +57,8 @@ if submitted:
 # --------------------
 # 解説マークダウン
 # --------------------
-st.markdown("""
+st.markdown(
+    """
 ---
 # 🏢 Building Footprints with OSMnx の解説
 
@@ -131,4 +138,5 @@ gdf_proj.plot(ax=ax, column="area_m2", cmap="OrRd", legend=True)
 ---
 
 この手法は、都市の建築密度分析、容積率評価、地図の視覚デザイン、環境評価など多くの応用分野で利用可能です。OSMデータを活用した都市モデリングの第一歩として有効です。
-""")
+"""
+)

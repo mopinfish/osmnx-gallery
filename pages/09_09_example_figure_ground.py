@@ -12,7 +12,8 @@ st.markdown("### 📍 場所とビジュアル設定を指定して、建物・�
 with st.form("figure_ground_form"):
     place = st.text_input("場所（例: 東京都千代田区）", "東京都千代田区")
     network_type = st.selectbox(
-        "道路ネットワークの種類", ["drive", "walk", "bike", "all"])
+        "道路ネットワークの種類", ["drive", "walk", "bike", "all"]
+    )
 
     st.markdown("#### 🎨 ビジュアル設定")
     building_color = st.color_picker("建物の色（図）", "#000000")
@@ -37,12 +38,10 @@ if submitted:
             # 描画
             fig, ax = plt.subplots(figsize=(8, 8))
             edges.plot(ax=ax, linewidth=0.5, color=road_color, zorder=1)
-            buildings.plot(ax=ax, facecolor=building_color,
-                           edgecolor="none", zorder=2)
+            buildings.plot(ax=ax, facecolor=building_color, edgecolor="none", zorder=2)
 
             if show_nodes:
-                nodes.plot(ax=ax, color=node_color,
-                           markersize=node_size, zorder=3)
+                nodes.plot(ax=ax, color=node_color, markersize=node_size, zorder=3)
 
             ax.set_axis_off()
             plt.tight_layout()
@@ -56,7 +55,8 @@ if submitted:
 # --------------------
 # 解説マークダウン
 # --------------------
-st.markdown("""
+st.markdown(
+    """
 ---
 # 🏙️ Example: Figure-Ground Diagram の解説
 
@@ -127,4 +127,5 @@ plt.tight_layout()
 ---
 
 この手法は都市設計、形態分析、建築教育、空間的なプレゼンテーションなどで広く活用されています。都市の構造的違いを視覚的に捉えるための直感的かつ強力なツールです。
-""")
+"""
+)

@@ -32,8 +32,11 @@ if submitted:
             G = ox.elevation.add_edge_grades(G)
 
             # 4. 勾配リスト抽出
-            grades = [d["grade"] for _, _, _, d in G.edges(
-                keys=True, data=True) if "grade" in d]
+            grades = [
+                d["grade"]
+                for _, _, _, d in G.edges(keys=True, data=True)
+                if "grade" in d
+            ]
 
             # 5. カラーマッピング設定
             cmap = cm.terrain
@@ -42,15 +45,21 @@ if submitted:
 
             # 6. 描画（カラーバー付き）
             fig, ax = plt.subplots(figsize=(10, 8))
-            ox.plot_graph(G, ax=ax, edge_color=edge_colors,
-                          edge_linewidth=1, node_size=0,
-                          bgcolor="white", show=False, close=False)
+            ox.plot_graph(
+                G,
+                ax=ax,
+                edge_color=edge_colors,
+                edge_linewidth=1,
+                node_size=0,
+                bgcolor="white",
+                show=False,
+                close=False,
+            )
 
             # カラーバー（凡例）を追加
             sm = cm.ScalarMappable(cmap=cmap, norm=norm)
             sm.set_array([])
-            cbar = fig.colorbar(sm, ax=ax, shrink=0.6,
-                                label="Edge Grade (slope)")
+            cbar = fig.colorbar(sm, ax=ax, shrink=0.6, label="Edge Grade (slope)")
             cbar.ax.tick_params(labelsize=8)
 
             st.pyplot(fig)
@@ -71,7 +80,8 @@ if submitted:
 # --------------------
 # 解説マークダウン
 # --------------------
-st.markdown("""
+st.markdown(
+    """
 ---
 # 🏔️ Node Elevations and Edge Grades の解説
 
@@ -154,4 +164,5 @@ plt.hist(grades, bins=30)
 ---
 
 この分析は、坂道の多い地域のモビリティ政策、歩行・自転車アクセスの最適化、都市地形の特徴分析に有効です。APIキー不要なDEMソース（SRTMなど）を使うことも可能です。
-""")
+"""
+)

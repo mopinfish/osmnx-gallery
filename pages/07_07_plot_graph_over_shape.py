@@ -32,11 +32,18 @@ if submitted:
 
             # 描画
             fig, ax = plt.subplots(figsize=(8, 8))
-            ox.plot_graph(G, ax=ax, bgcolor="white", show=False, close=False,
-                          edge_color="black", node_size=0, edge_linewidth=0.8)
+            ox.plot_graph(
+                G,
+                ax=ax,
+                bgcolor="white",
+                show=False,
+                close=False,
+                edge_color="black",
+                node_size=0,
+                edge_linewidth=0.8,
+            )
             gdf.plot(ax=ax, facecolor="none", edgecolor="red", linewidth=2)
-            ax.set_title(
-                f"{place} - {network_type} network with boundary", fontsize=12)
+            ax.set_title(f"{place} - {network_type} network with boundary", fontsize=12)
             st.pyplot(fig)
 
         except Exception as e:
@@ -45,7 +52,8 @@ if submitted:
 # --------------------
 # 解説マークダウン
 # --------------------
-st.markdown("""
+st.markdown(
+    """
 ---
 # 🗺️ Plot Street Network Over a Shape の解説
 
@@ -113,4 +121,5 @@ G_proj = ox.project_graph(G)
 ---
 
 この手法は、都市構造の可視化、計画範囲の明示、地図ベースのプレゼン資料作成などに活用できます。行政境界と道路網を直感的に比較することで、空間的な把握がより深まります。
-""")
+"""
+)
