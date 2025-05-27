@@ -3,6 +3,7 @@ import osmnx as ox
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.colors as mcolors
+import contextily as ctx
 
 st.set_page_config(page_title="12 - Elevation and Grade", layout="wide")
 st.title("🏔️ Node Elevations and Edge Grades")
@@ -55,11 +56,18 @@ if submitted:
                 show=False,
                 close=False,
             )
+            ctx.add_basemap(
+                ax,
+                crs=G.graph["crs"],
+                source=ctx.providers.OpenStreetMap.Mapnik,
+                alpha=0.5,
+            )
 
             # カラーバー（凡例）を追加
             sm = cm.ScalarMappable(cmap=cmap, norm=norm)
             sm.set_array([])
-            cbar = fig.colorbar(sm, ax=ax, shrink=0.6, label="Edge Grade (slope)")
+            cbar = fig.colorbar(sm, ax=ax, shrink=0.6,
+                                label="Edge Grade (slope)")
             cbar.ax.tick_params(labelsize=8)
 
             st.pyplot(fig)
