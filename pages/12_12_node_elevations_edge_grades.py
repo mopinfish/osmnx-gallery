@@ -50,7 +50,7 @@ if submitted:
                 G,
                 ax=ax,
                 edge_color=edge_colors,
-                edge_linewidth=1,
+                edge_linewidth=3,
                 node_size=0,
                 bgcolor="white",
                 show=False,

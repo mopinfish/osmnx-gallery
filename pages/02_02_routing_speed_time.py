@@ -1,6 +1,7 @@
 import streamlit as st
 import osmnx as ox
 import random
+import contextily as ctx
 
 st.set_page_config(page_title="02 - Routing: Speed and Time", layout="wide")
 st.title("🚗 Routing: Speed and Travel Time in OSMnx")
@@ -36,7 +37,7 @@ if submitted:
                 G,
                 route,
                 route_color="red",
-                route_linewidth=4,
+                route_linewidth=2,
                 bgcolor="white",
                 show=False,
                 close=False,
